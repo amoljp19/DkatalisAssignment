@@ -1,7 +1,8 @@
-package com.softaai.dkatalisassignment
+package com.softaai.dkatalisassignment.trending.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.softaai.dkatalisassignment.R
 
 class MainActivity : AppCompatActivity() {
 
