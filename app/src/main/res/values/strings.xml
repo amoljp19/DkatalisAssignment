@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">DkatalisAssignment</string>
+
+    <string name="toolbar_title">Trending</string>
+
+    <string name="action_sort_by_stars">Sort by stars</string>
+    <string name="action_sort_by_name">Sort by name</string>
+    <string name="reposity_error">Sort by name</string>
+    <string name="error_screen_title">Something went wrong..</string>
+    <string name="error_screen_body">An alien is probably blocking your signal.</string>
 </resources>
