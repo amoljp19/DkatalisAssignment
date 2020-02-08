@@ -31,6 +31,7 @@ dependencies {
     def okhttp3_version = "3.12.0"
     def kotlinCoroutineVersion = "1.1.1"
     def koin_version = "2.0.1"
+    def room_version = "2.2.1"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -53,6 +54,13 @@ dependencies {
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
     implementation "org.koin:koin-androidx-scope:$koin_version"
+
+    // Room
+    implementation "android.arch.persistence.room:runtime:$room_version"
+    kapt "android.arch.persistence.room:compiler:$room_version"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
 
 
     testImplementation 'junit:junit:4.12'

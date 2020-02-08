@@ -1,6 +1,6 @@
 package com.softaai.dkatalisassignment.di
 
-import com.softaai.dkatalisassignment.data.remote.TrendingReposApiService
+import com.softaai.dkatalisassignment.data.remote.TrendingRepositoryApiService
 import com.softaai.dkatalisassignment.utils.Constants
 import okhttp3.OkHttpClient
 import org.koin.dsl.module
@@ -8,11 +8,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 val apiModule = module {
-    fun provideTrendingReposApiService(retrofit: Retrofit): TrendingReposApiService {
-        return retrofit.create(TrendingReposApiService::class.java)
+    fun provideTrendingRepositoryApiService(retrofit: Retrofit): TrendingRepositoryApiService {
+        return retrofit.create(TrendingRepositoryApiService::class.java)
     }
 
-    single { provideTrendingReposApiService(get()) }
+    single { provideTrendingRepositoryApiService(get()) }
 }
 
 val retrofitModule = module {
