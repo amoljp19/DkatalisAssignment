@@ -3,7 +3,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class TrendingReposResponse(
+data class TrendingRepositoryResponse(
     @Json(name = "author")
     val author: String,
     @Json(name = "avatar")

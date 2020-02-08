@@ -7,9 +7,9 @@ import androidx.room.Query
 @Dao
 interface TrendingRepositoryDao {
 
-    @get:Query("SELECT * FROM trendingRepository")
-    val allTrendingRepositoryList: List<TrendingRepository>
+    @get:Query("SELECT * FROM gitHubRepository")
+    val allTrendingRepositoryList: List<GithubRepository>
 
     @Insert
-    fun insertAllTrendingRepositories(vararg trendingRepositories: TrendingRepository)
+    fun insertAllTrendingRepositories(vararg trendingRepositories: GithubRepository)
 }
