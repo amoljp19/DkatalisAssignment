@@ -1,11 +1,34 @@
 package com.softaai.dkatalisassignment.di
 
 import com.softaai.dkatalisassignment.data.remote.TrendingRepositoryApiService
+import com.softaai.dkatalisassignment.repository.TrendingRepository
+import com.softaai.dkatalisassignment.trending.viewmodel.GithubRepositoryViewModel
+import com.softaai.dkatalisassignment.trending.viewmodel.MainActivityViewModel
 import com.softaai.dkatalisassignment.utils.Constants
 import okhttp3.OkHttpClient
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+
+
+val mainActivityViewModelModule = module {
+    viewModel {
+        MainActivityViewModel(get(), get())
+    }
+}
+
+val githubRepositoryViewModel = module {
+    viewModel {
+        GithubRepositoryViewModel()
+    }
+}
+
+val trendingRepositoryModule = module {
+    single {
+        TrendingRepository(get())
+    }
+}
 
 val apiModule = module {
     fun provideTrendingRepositoryApiService(retrofit: Retrofit): TrendingRepositoryApiService {

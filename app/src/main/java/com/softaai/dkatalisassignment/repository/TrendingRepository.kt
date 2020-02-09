@@ -1,4 +1,7 @@
 package com.softaai.dkatalisassignment.repository
 
-class TrendingRepository {
+import com.softaai.dkatalisassignment.data.remote.TrendingRepositoryApiService
+
+class TrendingRepository(private val api: TrendingRepositoryApiService) {
+    suspend fun getAllTrendingRepositories() = api.getTrendingRepositories()
 }

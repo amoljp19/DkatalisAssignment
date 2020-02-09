@@ -68,7 +68,7 @@
                 android:id="@+id/post_list"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:adapter="@{viewModel.getPostListAdapter()}" />
+                app:adapter="@{viewModel.githubRepositoryListAdapter}" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <com.facebook.shimmer.ShimmerFrameLayout

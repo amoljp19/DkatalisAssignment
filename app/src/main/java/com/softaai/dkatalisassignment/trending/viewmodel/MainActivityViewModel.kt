@@ -37,7 +37,7 @@ class MainActivityViewModel(private val repo: TrendingRepository, private val bi
 
     val errorMessage: MutableLiveData<Int> = MutableLiveData()
 
-    //val errorClickListener = View.OnClickListener { loadRepositories() }
+    val errorClickListener = View.OnClickListener { getAllTrendingRepositories() }
 
     val githubRepositoryListAdapter: GithubRepositoryListAdapter = GithubRepositoryListAdapter()
 
@@ -80,7 +80,7 @@ class MainActivityViewModel(private val repo: TrendingRepository, private val bi
     override fun onResponse(call: Call<List<TrendingRepositoryResponse>>, response: Response<List<TrendingRepositoryResponse>>) {
         if (response.isSuccessful) {
             _data.postValue(response.body())
-           // githubRepositoryListAdapter.updatePostList(repositoryList)
+            response.body()?.let { githubRepositoryListAdapter.updatePostList(it) }
             _loadingState.postValue(LoadingState.LOADED)
         } else {
             _loadingState.postValue(LoadingState.error(response.errorBody().toString()))

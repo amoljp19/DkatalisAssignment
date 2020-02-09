@@ -1,8 +1,7 @@
 package com.softaai.dkatalisassignment
 
 import android.app.Application
-import com.softaai.dkatalisassignment.di.apiModule
-import com.softaai.dkatalisassignment.di.retrofitModule
+import com.softaai.dkatalisassignment.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -15,7 +14,7 @@ class TrendingRepositoriesApp: Application() {
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@TrendingRepositoriesApp)
-            modules(listOf(apiModule, retrofitModule))
+            modules(listOf(mainActivityViewModelModule, githubRepositoryViewModel, trendingRepositoryModule, apiModule, retrofitModule))
         }
     }
 }
