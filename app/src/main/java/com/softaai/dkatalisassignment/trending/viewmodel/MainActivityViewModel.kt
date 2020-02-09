@@ -1,5 +1,6 @@
 package com.softaai.dkatalisassignment.trending.viewmodel
 
+import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
@@ -20,7 +21,7 @@ import retrofit2.Response
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
 
-class MainActivityViewModel(private val repo: TrendingRepository): ViewModel(), Callback<List<GithubRepository>> {
+class MainActivityViewModel(private val repo: TrendingRepository): ViewModel(){
 
     private val parentJob = Job()
 
@@ -67,16 +68,17 @@ class MainActivityViewModel(private val repo: TrendingRepository): ViewModel(), 
     private suspend fun fetchData() {
         _loadingState.postValue(LoadingState.LOADING)
        // binding.shimmerViewContainer.startShimmerAnimation()
-        repo.getAllTrendingRepositories().enqueue(this)
+        val response = repo.getAllTrendingRepositories()
+        Log.e("", response.message())
         //binding.shimmerViewContainer.stopShimmerAnimation()
     }
 
-    override fun onFailure(call: Call<List<GithubRepository>>, t: Throwable) {
+    fun onFailure(call: Call<List<GithubRepository>>, t: Throwable) {
         _loadingState.postValue(LoadingState.error(t.message))
         //binding.shimmerViewContainer.stopShimmerAnimation()
     }
 
-    override fun onResponse(call: Call<List<GithubRepository>>, response: Response<List<GithubRepository>>) {
+    fun onResponse(call: Call<List<GithubRepository>>, response: Response<List<GithubRepository>>) {
         if (response.isSuccessful) {
             _data.postValue(response.body())
             response.body()?.let { githubRepositoryListAdapter.updatePostList(it) }
