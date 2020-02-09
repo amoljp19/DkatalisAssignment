@@ -7,11 +7,13 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.github.trendrepo.utils.SPUtils
+import com.softaai.dkatalisassignment.data.local.GithubRepository
 import com.softaai.dkatalisassignment.data.model.TrendingRepositoryResponse
 import com.softaai.dkatalisassignment.data.remote.LoadingState
 import com.softaai.dkatalisassignment.databinding.ActivityMainBinding
 import com.softaai.dkatalisassignment.repository.TrendingRepository
+import com.softaai.dkatalisassignment.trending.ui.GithubRepositoryListAdapter
+import com.softaai.dkatalisassignment.utils.SPUtils
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -26,6 +28,18 @@ class MainActivityViewModel(private val repo: TrendingRepository, private val bi
     private val coroutineContext : CoroutineContext get() = parentJob + Dispatchers.Default
 
     private val scope = CoroutineScope(coroutineContext)
+
+    val spUtils: SPUtils = SPUtils(binding.root.context)
+
+    val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
+
+    val errorVisibility: MutableLiveData<Int> = MutableLiveData()
+
+    val errorMessage: MutableLiveData<Int> = MutableLiveData()
+
+    //val errorClickListener = View.OnClickListener { loadRepositories() }
+
+    val githubRepositoryListAdapter: GithubRepositoryListAdapter = GithubRepositoryListAdapter()
 
 
     private val _loadingState = MutableLiveData<LoadingState>()
@@ -53,20 +67,25 @@ class MainActivityViewModel(private val repo: TrendingRepository, private val bi
 
     private suspend fun fetchData() {
         _loadingState.postValue(LoadingState.LOADING)
+        binding.shimmerViewContainer.startShimmerAnimation()
         repo.getAllTrendingRepositories().enqueue(this)
+        //binding.shimmerViewContainer.stopShimmerAnimation()
     }
 
     override fun onFailure(call: Call<List<TrendingRepositoryResponse>>, t: Throwable) {
         _loadingState.postValue(LoadingState.error(t.message))
+        binding.shimmerViewContainer.stopShimmerAnimation()
     }
 
     override fun onResponse(call: Call<List<TrendingRepositoryResponse>>, response: Response<List<TrendingRepositoryResponse>>) {
         if (response.isSuccessful) {
             _data.postValue(response.body())
+           // githubRepositoryListAdapter.updatePostList(repositoryList)
             _loadingState.postValue(LoadingState.LOADED)
         } else {
             _loadingState.postValue(LoadingState.error(response.errorBody().toString()))
         }
+        binding.shimmerViewContainer.stopShimmerAnimation()
     }
 
     fun cancelRequests() = coroutineContext.cancel()
@@ -75,5 +94,25 @@ class MainActivityViewModel(private val repo: TrendingRepository, private val bi
     override fun onCleared() {
         super.onCleared()
         cancelRequests()
+    }
+
+
+    fun onClickToolBarMenu(v: View) {
+        showFilterPopup(v)
+    }
+
+    private fun showFilterPopup(v: View) {
+        val popup =
+            PopupMenu(v.context, v, Gravity.END, 0, com.softaai.dkatalisassignment.R.style.OverflowMenu)
+        popup.inflate(com.softaai.dkatalisassignment.R.menu.menu_main)
+
+        popup.setOnMenuItemClickListener(object : PopupMenu.OnMenuItemClickListener {
+            override fun onMenuItemClick(item: MenuItem): Boolean {
+                when (item.getItemId()) {
+                    else -> return false
+                }
+            }
+        })
+        popup.show()
     }
 }
