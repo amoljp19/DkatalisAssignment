@@ -7,11 +7,11 @@ import com.softaai.dkatalisassignment.databinding.ItemRepositoryBinding
 
 class GithubRepositoryViewModel: ViewModel() {
 
-    var repository: TrendingRepositoryResponse? = null
+    var repository: GithubRepository? = null
     var isExpanded: Boolean = false
 
     fun bind(
-        repository: TrendingRepositoryResponse,
+        repository: GithubRepository,
         binding: ItemRepositoryBinding,
         expended: Boolean
     ) {

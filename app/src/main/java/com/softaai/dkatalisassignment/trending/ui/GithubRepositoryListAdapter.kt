@@ -14,7 +14,7 @@ import com.softaai.dkatalisassignment.trending.viewmodel.GithubRepositoryViewMod
 
 class GithubRepositoryListAdapter: RecyclerView.Adapter<GithubRepositoryListAdapter.ViewHolder>(){
 
-    private lateinit var trendingRepositoryList: List<TrendingRepositoryResponse>
+    private lateinit var trendingRepositoryList: List<GithubRepository>
     private var clickedNode: Int = -1
     private var previousClickedNode: Int = -1
 
@@ -57,14 +57,14 @@ class GithubRepositoryListAdapter: RecyclerView.Adapter<GithubRepositoryListAdap
     }
 
 
-    fun updatePostList(postList: List<TrendingRepositoryResponse>) {
+    fun updatePostList(postList: List<GithubRepository>) {
         this.trendingRepositoryList = postList
         notifyDataSetChanged()
     }
 
     class ViewHolder(val binding: ItemRepositoryBinding) : RecyclerView.ViewHolder(binding.root) {
         private val viewModel = GithubRepositoryViewModel()
-        fun bind(repository: TrendingRepositoryResponse, isExpended: Boolean) {
+        fun bind(repository: GithubRepository, isExpended: Boolean) {
              viewModel.bind(repository, binding, isExpended)
             binding.viewModel = viewModel
         }

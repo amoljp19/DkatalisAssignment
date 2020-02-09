@@ -8,7 +8,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.softaai.dkatalisassignment.data.local.GithubRepository
-import com.softaai.dkatalisassignment.data.model.TrendingRepositoryResponse
 import com.softaai.dkatalisassignment.data.remote.LoadingState
 import com.softaai.dkatalisassignment.databinding.ActivityMainBinding
 import com.softaai.dkatalisassignment.repository.TrendingRepository
@@ -21,7 +20,7 @@ import retrofit2.Response
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
 
-class MainActivityViewModel(private val repo: TrendingRepository, private val binding: ActivityMainBinding): ViewModel(), Callback<List<TrendingRepositoryResponse>> {
+class MainActivityViewModel(private val repo: TrendingRepository): ViewModel(), Callback<List<GithubRepository>> {
 
     private val parentJob = Job()
 
@@ -29,7 +28,7 @@ class MainActivityViewModel(private val repo: TrendingRepository, private val bi
 
     private val scope = CoroutineScope(coroutineContext)
 
-    val spUtils: SPUtils = SPUtils(binding.root.context)
+    //val spUtils: SPUtils = SPUtils(binding.root.context)
 
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
 
@@ -46,16 +45,16 @@ class MainActivityViewModel(private val repo: TrendingRepository, private val bi
     val loadingState: LiveData<LoadingState>
         get() = _loadingState
 
-    private val _data = MutableLiveData<List<TrendingRepositoryResponse>>()
-    val data: LiveData<List<TrendingRepositoryResponse>>
+    private val _data = MutableLiveData<List<GithubRepository>>()
+    val data: LiveData<List<GithubRepository>>
         get() = _data
 
     init {
         getAllTrendingRepositories()
-        binding.simpleSwipeRefreshLayout.setOnRefreshListener {
-            binding.simpleSwipeRefreshLayout.isRefreshing = false
-            getAllTrendingRepositories()
-        }
+//        binding.simpleSwipeRefreshLayout.setOnRefreshListener {
+//            binding.simpleSwipeRefreshLayout.isRefreshing = false
+//            getAllTrendingRepositories()
+//        }
     }
 
     private fun getAllTrendingRepositories(){
@@ -67,17 +66,17 @@ class MainActivityViewModel(private val repo: TrendingRepository, private val bi
 
     private suspend fun fetchData() {
         _loadingState.postValue(LoadingState.LOADING)
-        binding.shimmerViewContainer.startShimmerAnimation()
+       // binding.shimmerViewContainer.startShimmerAnimation()
         repo.getAllTrendingRepositories().enqueue(this)
         //binding.shimmerViewContainer.stopShimmerAnimation()
     }
 
-    override fun onFailure(call: Call<List<TrendingRepositoryResponse>>, t: Throwable) {
+    override fun onFailure(call: Call<List<GithubRepository>>, t: Throwable) {
         _loadingState.postValue(LoadingState.error(t.message))
-        binding.shimmerViewContainer.stopShimmerAnimation()
+        //binding.shimmerViewContainer.stopShimmerAnimation()
     }
 
-    override fun onResponse(call: Call<List<TrendingRepositoryResponse>>, response: Response<List<TrendingRepositoryResponse>>) {
+    override fun onResponse(call: Call<List<GithubRepository>>, response: Response<List<GithubRepository>>) {
         if (response.isSuccessful) {
             _data.postValue(response.body())
             response.body()?.let { githubRepositoryListAdapter.updatePostList(it) }
@@ -85,7 +84,7 @@ class MainActivityViewModel(private val repo: TrendingRepository, private val bi
         } else {
             _loadingState.postValue(LoadingState.error(response.errorBody().toString()))
         }
-        binding.shimmerViewContainer.stopShimmerAnimation()
+        //binding.shimmerViewContainer.stopShimmerAnimation()
     }
 
     fun cancelRequests() = coroutineContext.cancel()
@@ -115,4 +114,5 @@ class MainActivityViewModel(private val repo: TrendingRepository, private val bi
         })
         popup.show()
     }
+
 }

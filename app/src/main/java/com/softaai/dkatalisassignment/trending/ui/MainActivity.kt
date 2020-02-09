@@ -11,12 +11,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.softaai.dkatalisassignment.R
 import com.softaai.dkatalisassignment.databinding.ActivityMainBinding
 import com.softaai.dkatalisassignment.trending.viewmodel.MainActivityViewModel
+import org.koin.android.ext.android.get
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val mainActivityViewModel by viewModel<MainActivityViewModel>()
+    //private val mainActivityViewModel by viewModel<MainActivityViewModel>()
+    //private val mainActivityViewModel: MainActivityViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +27,10 @@ class MainActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.postList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        val mainActivityViewModel:MainActivityViewModel = get()
+        //mainActivityViewModel.passBinding(binding)
         binding.viewModel = mainActivityViewModel
+        //passBinding(binding)
 
 //        mainActivityViewModel.data.observe(this, Observer {
 //            // Populate the UI

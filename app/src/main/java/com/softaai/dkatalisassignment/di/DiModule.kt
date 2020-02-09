@@ -5,6 +5,7 @@ import com.softaai.dkatalisassignment.repository.TrendingRepository
 import com.softaai.dkatalisassignment.trending.viewmodel.GithubRepositoryViewModel
 import com.softaai.dkatalisassignment.trending.viewmodel.MainActivityViewModel
 import com.softaai.dkatalisassignment.utils.Constants
+import com.squareup.moshi.Moshi
 import okhttp3.OkHttpClient
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -14,7 +15,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 val mainActivityViewModelModule = module {
     viewModel {
-        MainActivityViewModel(get(), get())
+        MainActivityViewModel(get())
     }
 }
 
@@ -40,20 +41,25 @@ val apiModule = module {
 
 val retrofitModule = module {
 
+    fun provideMoshi(): Moshi {
+        return Moshi.Builder().build()
+    }
+
     fun provideHttpClient(): OkHttpClient {
         val okHttpClientBuilder = OkHttpClient.Builder()
 
         return okHttpClientBuilder.build()
     }
 
-    fun provideRetrofit(client: OkHttpClient): Retrofit {
+    fun provideRetrofit(moshi: Moshi, client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(Constants.URL)
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .client(client)
             .build()
     }
 
+    single { provideMoshi() }
     single { provideHttpClient() }
-    single { provideRetrofit(get()) }
+    single { provideRetrofit(get(), get()) }
 }
