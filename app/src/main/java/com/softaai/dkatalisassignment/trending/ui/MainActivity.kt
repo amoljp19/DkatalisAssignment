@@ -20,26 +20,42 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     //private val mainActivityViewModel by viewModel<MainActivityViewModel>()
     //private val mainActivityViewModel: MainActivityViewModel by inject()
+    val githubRepositoryListAdapter: GithubRepositoryListAdapter = GithubRepositoryListAdapter()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        //getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.postList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.trendingRepositoryList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.trendingRepositoryList.adapter = githubRepositoryListAdapter
+        binding.shimmerViewContainer.startShimmerAnimation()
         val mainActivityViewModel:MainActivityViewModel = get()
         //mainActivityViewModel.passBinding(binding)
+        mainActivityViewModel.errorVisibility.value = View.GONE
         binding.viewModel = mainActivityViewModel
         //passBinding(binding)
 
-//        mainActivityViewModel.data.observe(this, Observer {
-//            // Populate the UI
-//            Toast.makeText(this, "" + it.size, Toast.LENGTH_LONG)
-//        })
-//
-//        mainActivityViewModel.loadingState.observe(this, Observer {
-//            // Observe the loading state
-//            Toast.makeText(this, "" + it.msg, Toast.LENGTH_LONG)
-//        })
+        binding.simpleSwipeRefreshLayout.setOnRefreshListener {
+            binding.simpleSwipeRefreshLayout.isRefreshing = false
+            binding.shimmerViewContainer.startShimmerAnimation()
+            mainActivityViewModel.getAllTrendingRepositories()
+        }
+
+        mainActivityViewModel.data.observe(this, Observer {
+            // Populate the UI
+            Toast.makeText(this, "success" + it.size, Toast.LENGTH_LONG).show()
+            githubRepositoryListAdapter.updatePostList(it)
+            binding.trendingRepositoryList.adapter = githubRepositoryListAdapter
+            binding.shimmerViewContainer.stopShimmerAnimation()
+
+        })
+
+        mainActivityViewModel.loadingState.observe(this, Observer {
+            // Observe the loading state
+            Toast.makeText(this, "error" + it.msg, Toast.LENGTH_LONG).show()
+            binding.shimmerViewContainer.stopShimmerAnimation()
+        })
     }
 }

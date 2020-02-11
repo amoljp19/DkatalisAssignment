@@ -58,35 +58,28 @@ class MainActivityViewModel(private val repo: TrendingRepository): ViewModel(){
 //        }
     }
 
-    private fun getAllTrendingRepositories(){
+    fun getAllTrendingRepositories(){
         scope.launch {
-            fetchData()
+            withContext(Dispatchers.Main){
+                _loadingState.postValue(LoadingState.LOADING)
+                errorVisibility.value = View.GONE
+                //binding.shimmerViewContainer.stopShimmerAnimation()
+            }
+
+            val response = repo.getAllTrendingRepositories()
+
+            if (response.isSuccessful) {
+                _data.postValue(response.body())
+                _loadingState.postValue(LoadingState.LOADED)
+            } else {
+                _loadingState.postValue(LoadingState.error(response.errorBody().toString()))
+                errorVisibility.value = View.VISIBLE
+            }
+
+            withContext(Dispatchers.Main){
+              //  binding.shimmerViewContainer.stopShimmerAnimation()
+            }
         }
-    }
-
-
-    private suspend fun fetchData() {
-        _loadingState.postValue(LoadingState.LOADING)
-       // binding.shimmerViewContainer.startShimmerAnimation()
-        val response = repo.getAllTrendingRepositories()
-        Log.e("", response.message())
-        //binding.shimmerViewContainer.stopShimmerAnimation()
-    }
-
-    fun onFailure(call: Call<List<GithubRepository>>, t: Throwable) {
-        _loadingState.postValue(LoadingState.error(t.message))
-        //binding.shimmerViewContainer.stopShimmerAnimation()
-    }
-
-    fun onResponse(call: Call<List<GithubRepository>>, response: Response<List<GithubRepository>>) {
-        if (response.isSuccessful) {
-            _data.postValue(response.body())
-            response.body()?.let { githubRepositoryListAdapter.updatePostList(it) }
-            _loadingState.postValue(LoadingState.LOADED)
-        } else {
-            _loadingState.postValue(LoadingState.error(response.errorBody().toString()))
-        }
-        //binding.shimmerViewContainer.stopShimmerAnimation()
     }
 
     fun cancelRequests() = coroutineContext.cancel()

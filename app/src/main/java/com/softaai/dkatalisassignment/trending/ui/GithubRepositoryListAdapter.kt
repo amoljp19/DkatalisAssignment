@@ -11,6 +11,8 @@ import com.softaai.dkatalisassignment.data.model.TrendingRepositoryResponse
 import com.softaai.dkatalisassignment.databinding.ItemRepositoryBinding
 import com.softaai.dkatalisassignment.di.githubRepositoryViewModel
 import com.softaai.dkatalisassignment.trending.viewmodel.GithubRepositoryViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class GithubRepositoryListAdapter: RecyclerView.Adapter<GithubRepositoryListAdapter.ViewHolder>(){
 
@@ -57,8 +59,8 @@ class GithubRepositoryListAdapter: RecyclerView.Adapter<GithubRepositoryListAdap
     }
 
 
-    fun updatePostList(postList: List<GithubRepository>) {
-        this.trendingRepositoryList = postList
+    fun updatePostList(trendingRepositoryList: List<GithubRepository>) {
+        this.trendingRepositoryList = trendingRepositoryList
         notifyDataSetChanged()
     }
 
