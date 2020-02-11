@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.simpleSwipeRefreshLayout.setOnRefreshListener {
             binding.simpleSwipeRefreshLayout.isRefreshing = false
+            binding.shimmerViewContainer.visibility = View.VISIBLE
             binding.shimmerViewContainer.startShimmerAnimation()
             mainActivityViewModel.getAllTrendingRepositories()
         }
@@ -49,6 +50,7 @@ class MainActivity : AppCompatActivity() {
             githubRepositoryListAdapter.updatePostList(it)
             binding.trendingRepositoryList.adapter = githubRepositoryListAdapter
             binding.shimmerViewContainer.stopShimmerAnimation()
+            binding.shimmerViewContainer.visibility = View.GONE
 
         })
 
@@ -56,6 +58,8 @@ class MainActivity : AppCompatActivity() {
             // Observe the loading state
             Toast.makeText(this, "error" + it.msg, Toast.LENGTH_LONG).show()
             binding.shimmerViewContainer.stopShimmerAnimation()
+            //binding.shimmerViewContainer.visibility = View.GONE
+
         })
     }
 }
