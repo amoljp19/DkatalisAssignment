@@ -10,12 +10,14 @@ import retrofit2.Response
 @Dao
 interface TrendingRepositoryDao {
 
-    @get:Query("SELECT * FROM gitHubRepository")
-    val allTrendingRepositoryList: LiveData<List<GithubRepository>>
+    @get:Query("SELECT * FROM GitHubRepository")
+    val allTrendingRepositoryList: List<GithubRepository>
 
-    @Insert(onConflict = REPLACE)
+    //@Insert(onConflict = REPLACE)
+    @Insert
     fun insertAllTrendingRepositories(vararg trendingRepositories: GithubRepository)
 
-    @Insert(onConflict = REPLACE)
+    //@Insert(onConflict = REPLACE)
+    @Insert
     fun saveAllTrendingRepositories(trendingRepositories: List<GithubRepository>?)
 }

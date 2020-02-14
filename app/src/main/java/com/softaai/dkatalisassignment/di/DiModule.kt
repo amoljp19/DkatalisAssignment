@@ -32,10 +32,19 @@ val trendingRepositoryModule = module {
     single {
         TrendingRepository(get(), get())
     }
+}
 
-    single { Room.databaseBuilder(get(), TrendingRepositoryDatabase::class.java, "trending_repository_db").build() }
+val trendingRepositoryDbModule = module {
+    single {
+        Room.databaseBuilder(get(), TrendingRepositoryDatabase::class.java, "trending_repository_db").build()
+    }
 
-    single { get<TrendingRepositoryDatabase>().trendingRepositoryDao() }
+}
+
+val trendingRepositoryDaoModule = module{
+    single{
+        get<TrendingRepositoryDatabase>().trendingRepositoryDao()
+    }
 }
 
 val apiModule = module {

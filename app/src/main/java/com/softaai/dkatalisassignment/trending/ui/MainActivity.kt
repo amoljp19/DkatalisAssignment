@@ -39,19 +39,23 @@ class MainActivity : AppCompatActivity() {
 
         mainActivityViewModel.data.observe(this, Observer {
             // Populate the UI
-            Toast.makeText(this, "success" + it.size, Toast.LENGTH_LONG).show()
-            githubRepositoryListAdapter.updatePostList(it)
-            binding.trendingRepositoryList.adapter = githubRepositoryListAdapter
-            binding.shimmerViewContainer.stopShimmerAnimation()
-            binding.shimmerViewContainer.visibility = View.GONE
+            if(!it.isNullOrEmpty()){
+                Toast.makeText(this, "success" + it.size, Toast.LENGTH_LONG).show()
+                githubRepositoryListAdapter.updatePostList(it)
+                binding.trendingRepositoryList.adapter = githubRepositoryListAdapter
+                binding.shimmerViewContainer.stopShimmerAnimation()
+                binding.shimmerViewContainer.visibility = View.GONE
+            }
 
         })
 
         mainActivityViewModel.loadingState.observe(this, Observer {
             // Observe the loading state
-            Toast.makeText(this, "error" + it.msg, Toast.LENGTH_LONG).show()
-            binding.shimmerViewContainer.stopShimmerAnimation()
-            //binding.shimmerViewContainer.visibility = View.GONE
+            if(it != null){
+                Toast.makeText(this, "error" + it.msg, Toast.LENGTH_LONG).show()
+                binding.shimmerViewContainer.stopShimmerAnimation()
+                //binding.shimmerViewContainer.visibility = View.GONE
+            }
 
         })
     }

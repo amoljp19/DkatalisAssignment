@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.softaai.dkatalisassignment.data.local.GithubRepository
 import com.softaai.dkatalisassignment.data.remote.LoadingState
@@ -51,6 +52,31 @@ class MainActivityViewModel(private val repo: TrendingRepository): ViewModel(){
 //        }
     }
 
+    fun getAllTrendingRepositories1(){
+        scope.launch {
+            withContext(Dispatchers.Main){
+                _loadingState.postValue(LoadingState.LOADING)
+                 errorVisibility.value = View.GONE
+            }
+
+//            val response = repo.getAllTrendingRepositories1()
+//            _data.postValue(response.value)
+//            _loadingState.postValue(LoadingState.LOADED)
+//            if (response.isSuccessful) {
+//                _data.postValue(response.body())
+//                _loadingState.postValue(LoadingState.LOADED)
+//                //repo.saveTrendingRepositories(response.body())
+//            } else {
+//                _loadingState.postValue(LoadingState.error(response.errorBody().toString()))
+//                // errorVisibility.value = View.VISIBLE
+//            }
+
+            withContext(Dispatchers.Main){
+                //  binding.shimmerViewContainer.stopShimmerAnimation()
+            }
+        }
+    }
+
     fun getAllTrendingRepositories(){
         scope.launch {
             withContext(Dispatchers.Main){
@@ -59,20 +85,30 @@ class MainActivityViewModel(private val repo: TrendingRepository): ViewModel(){
                 //binding.shimmerViewContainer.stopShimmerAnimation()
             }
 
-            val response = repo.getAllTrendingRepositories()
-
-            if (response.isSuccessful) {
-                _data.postValue(response.body())
-                _loadingState.postValue(LoadingState.LOADED)
-                 //repo.saveTrendingRepositories(response.body())
-            } else {
-                _loadingState.postValue(LoadingState.error(response.errorBody().toString()))
-               // errorVisibility.value = View.VISIBLE
+            if(repo.getAllTrendingRepositoriesList().isNullOrEmpty()){
+                getAllTrendingRepositoriesFromRemote()
             }
 
-            withContext(Dispatchers.Main){
-              //  binding.shimmerViewContainer.stopShimmerAnimation()
-            }
+            _data.postValue(repo.getAllTrendingRepositoriesList())
+
+//            withContext(Dispatchers.Main){
+//              //  binding.shimmerViewContainer.stopShimmerAnimation()
+//                _data.postValue(repositoryList)
+//            }
+        }
+    }
+
+    suspend fun getAllTrendingRepositoriesFromRemote(){
+        val response = repo.getAllTrendingRepositories()
+
+        if (response.isSuccessful) {
+           // _data.postValue(response.body())
+            _loadingState.postValue(LoadingState.LOADED)
+            repo.insertAllTrendingRepositories(*response.body()!!.toTypedArray())
+            //_data.postValue(repo.getAllTrendingRepositoriesList())
+        } else {
+            _loadingState.postValue(LoadingState.error(response.errorBody().toString()))
+            errorVisibility.value = View.VISIBLE
         }
     }
 
