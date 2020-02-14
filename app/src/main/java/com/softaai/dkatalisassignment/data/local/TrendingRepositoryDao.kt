@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
+import retrofit2.Response
 
 @Dao
 interface TrendingRepositoryDao {
@@ -14,4 +15,7 @@ interface TrendingRepositoryDao {
 
     @Insert(onConflict = REPLACE)
     fun insertAllTrendingRepositories(vararg trendingRepositories: GithubRepository)
+
+    @Insert(onConflict = REPLACE)
+    fun saveAllTrendingRepositories(trendingRepositories: List<GithubRepository>?)
 }

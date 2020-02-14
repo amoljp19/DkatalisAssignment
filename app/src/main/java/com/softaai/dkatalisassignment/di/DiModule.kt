@@ -1,5 +1,8 @@
 package com.softaai.dkatalisassignment.di
 
+import androidx.room.Room
+import com.softaai.dkatalisassignment.data.local.TrendingRepositoryDao
+import com.softaai.dkatalisassignment.data.local.TrendingRepositoryDatabase
 import com.softaai.dkatalisassignment.data.remote.TrendingRepositoryApiService
 import com.softaai.dkatalisassignment.repository.TrendingRepository
 import com.softaai.dkatalisassignment.trending.viewmodel.GithubRepositoryViewModel
@@ -27,8 +30,12 @@ val githubRepositoryViewModel = module {
 
 val trendingRepositoryModule = module {
     single {
-        TrendingRepository(get())
+        TrendingRepository(get(), get())
     }
+
+    single { Room.databaseBuilder(get(), TrendingRepositoryDatabase::class.java, "trending_repository_db").build() }
+
+    single { get<TrendingRepositoryDatabase>().trendingRepositoryDao() }
 }
 
 val apiModule = module {

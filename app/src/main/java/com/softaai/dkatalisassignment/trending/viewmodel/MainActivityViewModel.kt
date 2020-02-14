@@ -55,7 +55,7 @@ class MainActivityViewModel(private val repo: TrendingRepository): ViewModel(){
         scope.launch {
             withContext(Dispatchers.Main){
                 _loadingState.postValue(LoadingState.LOADING)
-                errorVisibility.value = View.GONE
+                //errorVisibility.value = View.GONE
                 //binding.shimmerViewContainer.stopShimmerAnimation()
             }
 
@@ -64,9 +64,10 @@ class MainActivityViewModel(private val repo: TrendingRepository): ViewModel(){
             if (response.isSuccessful) {
                 _data.postValue(response.body())
                 _loadingState.postValue(LoadingState.LOADED)
+                 //repo.saveTrendingRepositories(response.body())
             } else {
                 _loadingState.postValue(LoadingState.error(response.errorBody().toString()))
-                errorVisibility.value = View.VISIBLE
+               // errorVisibility.value = View.VISIBLE
             }
 
             withContext(Dispatchers.Main){
