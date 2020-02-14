@@ -13,12 +13,13 @@ import java.util.concurrent.TimeUnit
 class TrendingRepository(private val api: TrendingRepositoryApiService, private val dao: TrendingRepositoryDao) {
 
     suspend fun getAllTrendingRepositories() = api.getTrendingRepositories()
-    
+
     fun insertAllTrendingRepositories(vararg trendingRepositories: GithubRepository){
         dao.insertAllTrendingRepositories(*trendingRepositories)
     }
 
     fun getAllTrendingRepositoriesList(): List<GithubRepository>{
-        return dao.allTrendingRepositoryList
+        val list = dao.allTrendingRepositoryList
+        return list//dao.allTrendingRepositoryList
     }
 }

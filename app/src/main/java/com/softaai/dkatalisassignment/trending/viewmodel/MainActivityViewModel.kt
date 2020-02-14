@@ -67,6 +67,7 @@ class MainActivityViewModel(private val repo: TrendingRepository, private val sp
         if (response.isSuccessful) {
             _loadingState.postValue(LoadingState.LOADED)
             repo.insertAllTrendingRepositories(*response.body()!!.toTypedArray())
+            spUtils.save("TIME", System.currentTimeMillis())
         } else {
             _loadingState.postValue(LoadingState.error(response.errorBody().toString()))
             errorVisibility.value = View.VISIBLE
