@@ -16,7 +16,4 @@ interface TrendingRepositoryDao {
     @Insert(onConflict = REPLACE)
     fun insertAllTrendingRepositories(vararg trendingRepositories: GithubRepository)
 
-    //@Insert(onConflict = REPLACE)
-    @Insert
-    fun saveAllTrendingRepositories(trendingRepositories: List<GithubRepository>?)
 }
