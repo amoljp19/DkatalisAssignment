@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.widget.TextView
-import java.lang.Exception
 
 class CircleView : TextView {
     private var strokeWidth: Float = 0.toFloat()
@@ -63,7 +62,7 @@ class CircleView : TextView {
     fun setSolidColor(color: String) {
         try {
             solidColor = Color.parseColor(color)
-        } catch (ex: Exception){
+        } catch (ex: Exception) {
             //TODO:
         }
     }

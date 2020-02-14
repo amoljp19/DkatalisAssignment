@@ -22,7 +22,18 @@ class GithubRepositoryViewModelTest {
 
     @Test
     fun testGithubRepositoryNotNull() {
-        val githubRepository = GithubRepository(id=0, author="twostraws", name="ControlRoom", avatar="https://github.com/twostraws.png", description="A macOS app to control the Xcode Simulator.", language="Swift", languageColor="#ffac45", stars="1245", forks="70", currentPeriodStars="440")
+        val githubRepository = GithubRepository(
+            id = 0,
+            author = "twostraws",
+            name = "ControlRoom",
+            avatar = "https://github.com/twostraws.png",
+            description = "A macOS app to control the Xcode Simulator.",
+            language = "Swift",
+            languageColor = "#ffac45",
+            stars = "1245",
+            forks = "70",
+            currentPeriodStars = "440"
+        )
         githubRepositoryViewModel.repository = githubRepository
         MatcherAssert.assertThat(githubRepositoryViewModel.repository, CoreMatchers.notNullValue())
     }

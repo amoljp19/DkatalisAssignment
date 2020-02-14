@@ -1,9 +1,9 @@
 package com.softaai.dkatalisassignment.trending.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,10 +21,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.trendingRepositoryList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.trendingRepositoryList.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.trendingRepositoryList.adapter = githubRepositoryListAdapter
         binding.shimmerViewContainer.startShimmerAnimation()
-        val mainActivityViewModel:MainActivityViewModel = get()
+        val mainActivityViewModel: MainActivityViewModel = get()
         mainActivityViewModel.errorVisibility.value = View.GONE
         binding.viewModel = mainActivityViewModel
 
@@ -36,8 +37,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         mainActivityViewModel.data.observe(this, Observer {
-            if(!it.isNullOrEmpty()){
-                Toast.makeText(this, "success" + it.size, Toast.LENGTH_LONG).show()
+            if (!it.isNullOrEmpty()) {
                 githubRepositoryListAdapter.updatePostList(it)
                 binding.trendingRepositoryList.adapter = githubRepositoryListAdapter
                 binding.shimmerViewContainer.stopShimmerAnimation()
@@ -47,8 +47,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         mainActivityViewModel.loadingState.observe(this, Observer {
-            if(it != null){
-                Toast.makeText(this, "error" + it.msg, Toast.LENGTH_LONG).show()
+            if (it != null) {
                 binding.shimmerViewContainer.stopShimmerAnimation()
                 //binding.shimmerViewContainer.visibility = View.GONE
             }

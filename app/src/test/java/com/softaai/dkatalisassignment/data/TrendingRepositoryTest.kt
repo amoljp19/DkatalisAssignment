@@ -12,12 +12,10 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.test.KoinTest
 import org.koin.test.inject
-import org.mockito.InjectMocks
 import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.converter.moshi.MoshiConverterFactory
 
@@ -31,14 +29,18 @@ class TrendingRepositoryTest : KoinTest, MockServerSuite() {
     override fun setup() {
         super.setup()
         startKoin {
-            modules(trendingRepositoryModule) }
-        server.retrofitService(TrendingRepositoryApiService::class.java, MoshiConverterFactory.create())
+            modules(trendingRepositoryModule)
+        }
+        server.retrofitService(
+            TrendingRepositoryApiService::class.java,
+            MoshiConverterFactory.create()
+        )
         runBlocking { trendingRepository.getAllTrendingRepositories() }
     }
 
 
     @Test
-    fun getApiResponse(){
+    fun getApiResponse() {
 
         server.whenever(Method.GET, "/repositories")
             .thenRespond(success(jsonBody = fileBody("api_response.json")))

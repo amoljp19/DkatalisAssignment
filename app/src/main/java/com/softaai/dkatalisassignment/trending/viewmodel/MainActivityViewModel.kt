@@ -16,11 +16,12 @@ import kotlinx.coroutines.*
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
 
-class MainActivityViewModel(private val repo: TrendingRepository, private val spUtils: SPUtils): ViewModel(){
+class MainActivityViewModel(private val repo: TrendingRepository, private val spUtils: SPUtils) :
+    ViewModel() {
 
     private val parentJob = Job()
 
-    private val coroutineContext : CoroutineContext get() = parentJob + Dispatchers.Default
+    private val coroutineContext: CoroutineContext get() = parentJob + Dispatchers.Default
 
     private val scope = CoroutineScope(coroutineContext)
 
@@ -46,14 +47,14 @@ class MainActivityViewModel(private val repo: TrendingRepository, private val sp
     }
 
 
-    fun getAllTrendingRepositories(){
+    fun getAllTrendingRepositories() {
         scope.launch {
             _loadingState.postValue(LoadingState.LOADING)
 
             val minutes =
                 TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - spUtils.getValueLong("TIME")!!)
 
-            if(minutes >= 120 || repo.getAllTrendingRepositoriesList().isNullOrEmpty()){
+            if (minutes >= 120 || repo.getAllTrendingRepositoriesList().isNullOrEmpty()) {
                 getAllTrendingRepositoriesFromRemote()
             }
 
@@ -61,7 +62,7 @@ class MainActivityViewModel(private val repo: TrendingRepository, private val sp
         }
     }
 
-    suspend fun getAllTrendingRepositoriesFromRemote(){
+    suspend fun getAllTrendingRepositoriesFromRemote() {
         val response = repo.getAllTrendingRepositories()
 
         if (response.isSuccessful) {
@@ -89,7 +90,13 @@ class MainActivityViewModel(private val repo: TrendingRepository, private val sp
 
     private fun showFilterPopup(v: View) {
         val popup =
-            PopupMenu(v.context, v, Gravity.END, 0, com.softaai.dkatalisassignment.R.style.OverflowMenu)
+            PopupMenu(
+                v.context,
+                v,
+                Gravity.END,
+                0,
+                com.softaai.dkatalisassignment.R.style.OverflowMenu
+            )
         popup.inflate(com.softaai.dkatalisassignment.R.menu.menu_main)
 
         popup.setOnMenuItemClickListener(object : PopupMenu.OnMenuItemClickListener {

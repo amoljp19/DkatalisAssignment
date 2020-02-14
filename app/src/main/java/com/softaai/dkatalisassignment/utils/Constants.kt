@@ -1,7 +1,7 @@
 package com.softaai.dkatalisassignment.utils
 
 class Constants {
-    companion object{
+    companion object {
         const val URL: String = "https://github-trending-api.now.sh"
     }
 }

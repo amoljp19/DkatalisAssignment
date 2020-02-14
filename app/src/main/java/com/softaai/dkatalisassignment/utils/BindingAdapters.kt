@@ -13,16 +13,18 @@ import com.bumptech.glide.request.RequestOptions
 @BindingAdapter("mutableVisibility")
 fun setMutableVisibility(view: View, visibility: MutableLiveData<Int>?) {
     val parentActivity: AppCompatActivity? = view.getParentActivity()
-    if(parentActivity != null && visibility != null) {
-        visibility.observe(parentActivity, Observer { value -> view.visibility = value?:View.VISIBLE})
+    if (parentActivity != null && visibility != null) {
+        visibility.observe(
+            parentActivity,
+            Observer { value -> view.visibility = value ?: View.VISIBLE })
     }
 }
 
 @BindingAdapter("mutableError")
 fun setMutableError(view: View, error: MutableLiveData<Int>?) {
     val parentActivity: AppCompatActivity? = view.getParentActivity()
-    if(parentActivity != null && error != null) {
-        error.observe(parentActivity, Observer { value -> view.visibility = value?:View.VISIBLE})
+    if (parentActivity != null && error != null) {
+        error.observe(parentActivity, Observer { value -> view.visibility = value ?: View.VISIBLE })
     }
 }
 

@@ -15,7 +15,7 @@ import org.koin.test.KoinTest
 import org.koin.test.inject
 
 @RunWith(AndroidJUnit4::class)
-abstract class BaseTest: KoinTest{
+abstract class BaseTest : KoinTest {
 
     protected val database: TrendingRepositoryDatabase by inject()
 
@@ -27,12 +27,12 @@ abstract class BaseTest: KoinTest{
 
     @After
     open fun tearDown() {
-     stopKoin()
+        stopKoin()
     }
 
 
     private fun configureDi() {
-        startKoin{
+        startKoin {
             listOf(configureLocalModuleTest(ApplicationProvider.getApplicationContext<Context>()))
         }
     }

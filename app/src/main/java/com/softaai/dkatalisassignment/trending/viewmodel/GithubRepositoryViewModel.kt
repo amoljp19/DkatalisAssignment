@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.softaai.dkatalisassignment.data.local.GithubRepository
 import com.softaai.dkatalisassignment.databinding.ItemRepositoryBinding
 
-class GithubRepositoryViewModel: ViewModel() {
+class GithubRepositoryViewModel : ViewModel() {
 
     var repository: GithubRepository? = null
     var isExpanded: Boolean = false

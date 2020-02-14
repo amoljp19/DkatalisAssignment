@@ -10,12 +10,11 @@ import com.softaai.dkatalisassignment.data.local.GithubRepository
 import com.softaai.dkatalisassignment.databinding.ItemRepositoryBinding
 import com.softaai.dkatalisassignment.trending.viewmodel.GithubRepositoryViewModel
 
-class GithubRepositoryListAdapter: RecyclerView.Adapter<GithubRepositoryListAdapter.ViewHolder>(){
+class GithubRepositoryListAdapter : RecyclerView.Adapter<GithubRepositoryListAdapter.ViewHolder>() {
 
     private lateinit var trendingRepositoryList: List<GithubRepository>
     private var clickedNode: Int = -1
     private var previousClickedNode: Int = -1
-
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -63,7 +62,7 @@ class GithubRepositoryListAdapter: RecyclerView.Adapter<GithubRepositoryListAdap
     class ViewHolder(val binding: ItemRepositoryBinding) : RecyclerView.ViewHolder(binding.root) {
         private val viewModel = GithubRepositoryViewModel()
         fun bind(repository: GithubRepository, isExpended: Boolean) {
-             viewModel.bind(repository, binding, isExpended)
+            viewModel.bind(repository, binding, isExpended)
             binding.viewModel = viewModel
         }
 

@@ -3,7 +3,6 @@ package com.softaai.weatherforecast.data
 import com.softaai.dkatalisassignment.data.local.GithubRepository
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody
-import org.hamcrest.MatcherAssert
 import org.hamcrest.core.Is.`is`
 import org.junit.Assert.assertThat
 import org.junit.Test
@@ -16,7 +15,8 @@ import retrofit2.Response
 class ApiResponseTest {
     @Test
     fun apiResponseSuccess() {
-        val apiResponseSuccess: Response<List<GithubRepository>> = Response.success("abc") as Response<List<GithubRepository>>
+        val apiResponseSuccess: Response<List<GithubRepository>> =
+            Response.success("abc") as Response<List<GithubRepository>>
 
         assertThat(apiResponseSuccess.body().toString(), `is`("abc"))
 
@@ -24,7 +24,10 @@ class ApiResponseTest {
 
     @Test
     fun apiResponseError() {
-        val apiResponseError: Response<List<GithubRepository>> = Response.error<String>(400, ResponseBody.create("application/json".toMediaTypeOrNull(), "Response.error()")) as Response<List<GithubRepository>>
+        val apiResponseError: Response<List<GithubRepository>> = Response.error<String>(
+            400,
+            ResponseBody.create("application/json".toMediaTypeOrNull(), "Response.error()")
+        ) as Response<List<GithubRepository>>
 
         assertThat(apiResponseError.message(), `is`("Response.error()"))
     }
