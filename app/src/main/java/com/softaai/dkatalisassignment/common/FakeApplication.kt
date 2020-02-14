@@ -1,4 +1,4 @@
-package com.softaai.dkatalisassignment
+package com.softaai.dkatalisassignment.common
 
 import android.app.Application
 

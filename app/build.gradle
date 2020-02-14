@@ -16,6 +16,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.softaai.dkatalisassignment.common..FakeRunner"
     }
     buildTypes {
         release {
@@ -35,10 +36,6 @@ android {
         }
 
         animationsDisabled = true
-    }
-
-    defaultConfig {
-        testInstrumentationRunner "com.softaai.dkatalisassignment.FakeRunner"
     }
 }
 
