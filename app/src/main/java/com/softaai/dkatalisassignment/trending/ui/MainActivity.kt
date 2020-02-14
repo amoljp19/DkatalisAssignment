@@ -6,14 +6,11 @@ import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.softaai.dkatalisassignment.R
 import com.softaai.dkatalisassignment.databinding.ActivityMainBinding
 import com.softaai.dkatalisassignment.trending.viewmodel.MainActivityViewModel
 import org.koin.android.ext.android.get
-import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,17 +22,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.trendingRepositoryList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.trendingRepositoryList.adapter = githubRepositoryListAdapter
         binding.shimmerViewContainer.startShimmerAnimation()
         val mainActivityViewModel:MainActivityViewModel = get()
-        //mainActivityViewModel.passBinding(binding)
         mainActivityViewModel.errorVisibility.value = View.GONE
         binding.viewModel = mainActivityViewModel
-        //passBinding(binding)
 
         binding.simpleSwipeRefreshLayout.setOnRefreshListener {
             binding.simpleSwipeRefreshLayout.isRefreshing = false

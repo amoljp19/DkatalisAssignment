@@ -1,6 +1,5 @@
 package com.softaai.dkatalisassignment.trending.viewmodel
 
-import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
@@ -10,15 +9,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.softaai.dkatalisassignment.data.local.GithubRepository
 import com.softaai.dkatalisassignment.data.remote.LoadingState
-import com.softaai.dkatalisassignment.databinding.ActivityMainBinding
 import com.softaai.dkatalisassignment.repository.TrendingRepository
 import com.softaai.dkatalisassignment.trending.ui.GithubRepositoryListAdapter
-import com.softaai.dkatalisassignment.utils.SPUtils
 import kotlinx.coroutines.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
 
 class MainActivityViewModel(private val repo: TrendingRepository): ViewModel(){

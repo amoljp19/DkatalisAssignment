@@ -2,7 +2,6 @@ package com.softaai.dkatalisassignment.trending.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.softaai.dkatalisassignment.data.local.GithubRepository
-import com.softaai.dkatalisassignment.data.model.TrendingRepositoryResponse
 import com.softaai.dkatalisassignment.databinding.ItemRepositoryBinding
 
 class GithubRepositoryViewModel: ViewModel() {

@@ -7,12 +7,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.softaai.dkatalisassignment.R
 import com.softaai.dkatalisassignment.data.local.GithubRepository
-import com.softaai.dkatalisassignment.data.model.TrendingRepositoryResponse
 import com.softaai.dkatalisassignment.databinding.ItemRepositoryBinding
-import com.softaai.dkatalisassignment.di.githubRepositoryViewModel
 import com.softaai.dkatalisassignment.trending.viewmodel.GithubRepositoryViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 class GithubRepositoryListAdapter: RecyclerView.Adapter<GithubRepositoryListAdapter.ViewHolder>(){
 
