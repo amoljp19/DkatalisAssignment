@@ -14,7 +14,9 @@ class TrendingRepositoriesApp: Application() {
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@TrendingRepositoriesApp)
-            modules(listOf(mainActivityViewModelModule, githubRepositoryViewModel, trendingRepositoryModule, trendingRepositoryDbModule, trendingRepositoryDaoModule, apiModule, retrofitModule))
+            modules(listOf(mainActivityViewModelModule, githubRepositoryViewModel,
+                trendingRepositoryModule, trendingRepositoryDbModule,
+                trendingRepositoryDaoModule, spUtilsModule, apiModule, retrofitModule))
         }
     }
 }

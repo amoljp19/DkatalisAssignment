@@ -13,8 +13,7 @@ interface TrendingRepositoryDao {
     @get:Query("SELECT * FROM GitHubRepository")
     val allTrendingRepositoryList: List<GithubRepository>
 
-    //@Insert(onConflict = REPLACE)
-    @Insert
+    @Insert(onConflict = REPLACE)
     fun insertAllTrendingRepositories(vararg trendingRepositories: GithubRepository)
 
     //@Insert(onConflict = REPLACE)

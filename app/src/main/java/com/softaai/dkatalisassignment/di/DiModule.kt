@@ -8,6 +8,7 @@ import com.softaai.dkatalisassignment.repository.TrendingRepository
 import com.softaai.dkatalisassignment.trending.viewmodel.GithubRepositoryViewModel
 import com.softaai.dkatalisassignment.trending.viewmodel.MainActivityViewModel
 import com.softaai.dkatalisassignment.utils.Constants
+import com.softaai.dkatalisassignment.utils.SPUtils
 import com.squareup.moshi.Moshi
 import okhttp3.OkHttpClient
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -18,7 +19,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 val mainActivityViewModelModule = module {
     viewModel {
-        MainActivityViewModel(get())
+        MainActivityViewModel(get(), get())
     }
 }
 
@@ -44,6 +45,12 @@ val trendingRepositoryDbModule = module {
 val trendingRepositoryDaoModule = module{
     single{
         get<TrendingRepositoryDatabase>().trendingRepositoryDao()
+    }
+}
+
+val spUtilsModule = module {
+    single {
+        SPUtils(get())
     }
 }
 

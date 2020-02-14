@@ -6,16 +6,17 @@ import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.softaai.dkatalisassignment.data.local.GithubRepository
 import com.softaai.dkatalisassignment.data.remote.LoadingState
 import com.softaai.dkatalisassignment.repository.TrendingRepository
 import com.softaai.dkatalisassignment.trending.ui.GithubRepositoryListAdapter
+import com.softaai.dkatalisassignment.utils.SPUtils
 import kotlinx.coroutines.*
+import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
 
-class MainActivityViewModel(private val repo: TrendingRepository): ViewModel(){
+class MainActivityViewModel(private val repo: TrendingRepository, private val spUtils: SPUtils): ViewModel(){
 
     private val parentJob = Job()
 
@@ -23,13 +24,9 @@ class MainActivityViewModel(private val repo: TrendingRepository): ViewModel(){
 
     private val scope = CoroutineScope(coroutineContext)
 
-    //val spUtils: SPUtils = SPUtils(binding.root.context)
-
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
 
     val errorVisibility: MutableLiveData<Int> = MutableLiveData()
-
-    val errorMessage: MutableLiveData<Int> = MutableLiveData()
 
     val errorClickListener = View.OnClickListener { getAllTrendingRepositories() }
 
@@ -46,55 +43,21 @@ class MainActivityViewModel(private val repo: TrendingRepository): ViewModel(){
 
     init {
         getAllTrendingRepositories()
-//        binding.simpleSwipeRefreshLayout.setOnRefreshListener {
-//            binding.simpleSwipeRefreshLayout.isRefreshing = false
-//            getAllTrendingRepositories()
-//        }
     }
 
-    fun getAllTrendingRepositories1(){
-        scope.launch {
-            withContext(Dispatchers.Main){
-                _loadingState.postValue(LoadingState.LOADING)
-                 errorVisibility.value = View.GONE
-            }
-
-//            val response = repo.getAllTrendingRepositories1()
-//            _data.postValue(response.value)
-//            _loadingState.postValue(LoadingState.LOADED)
-//            if (response.isSuccessful) {
-//                _data.postValue(response.body())
-//                _loadingState.postValue(LoadingState.LOADED)
-//                //repo.saveTrendingRepositories(response.body())
-//            } else {
-//                _loadingState.postValue(LoadingState.error(response.errorBody().toString()))
-//                // errorVisibility.value = View.VISIBLE
-//            }
-
-            withContext(Dispatchers.Main){
-                //  binding.shimmerViewContainer.stopShimmerAnimation()
-            }
-        }
-    }
 
     fun getAllTrendingRepositories(){
         scope.launch {
-            withContext(Dispatchers.Main){
-                _loadingState.postValue(LoadingState.LOADING)
-                //errorVisibility.value = View.GONE
-                //binding.shimmerViewContainer.stopShimmerAnimation()
-            }
+            _loadingState.postValue(LoadingState.LOADING)
 
-            if(repo.getAllTrendingRepositoriesList().isNullOrEmpty()){
+            val minutes =
+                TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - spUtils.getValueLong("TIME")!!)
+
+            if(minutes >= 120 || repo.getAllTrendingRepositoriesList().isNullOrEmpty()){
                 getAllTrendingRepositoriesFromRemote()
             }
 
             _data.postValue(repo.getAllTrendingRepositoriesList())
-
-//            withContext(Dispatchers.Main){
-//              //  binding.shimmerViewContainer.stopShimmerAnimation()
-//                _data.postValue(repositoryList)
-//            }
         }
     }
 
@@ -102,10 +65,8 @@ class MainActivityViewModel(private val repo: TrendingRepository): ViewModel(){
         val response = repo.getAllTrendingRepositories()
 
         if (response.isSuccessful) {
-           // _data.postValue(response.body())
             _loadingState.postValue(LoadingState.LOADED)
             repo.insertAllTrendingRepositories(*response.body()!!.toTypedArray())
-            //_data.postValue(repo.getAllTrendingRepositoriesList())
         } else {
             _loadingState.postValue(LoadingState.error(response.errorBody().toString()))
             errorVisibility.value = View.VISIBLE

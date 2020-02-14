@@ -13,31 +13,12 @@ import java.util.concurrent.TimeUnit
 class TrendingRepository(private val api: TrendingRepositoryApiService, private val dao: TrendingRepositoryDao) {
 
     suspend fun getAllTrendingRepositories() = api.getTrendingRepositories()
-
-    fun saveTrendingRepositories(trendingRepositories: List<GithubRepository>?) {
-        dao.saveAllTrendingRepositories(trendingRepositories)
-    }
-
+    
     fun insertAllTrendingRepositories(vararg trendingRepositories: GithubRepository){
         dao.insertAllTrendingRepositories(*trendingRepositories)
     }
 
     fun getAllTrendingRepositoriesList(): List<GithubRepository>{
-        val list = dao.allTrendingRepositoryList
-        return list
-    }
-
-//    suspend fun getAllTrendingRepositories1() : LiveData<List<GithubRepository>>{
-//
-//        refreshTrendingRepositories()
-//
-//        return dao.allTrendingRepositoryList
-//    }
-
-    private suspend fun refreshTrendingRepositories(){
-        val response = api.getTrendingRepositories()
-        if(response.isSuccessful){
-            dao.saveAllTrendingRepositories(response.body())
-        }
+        return dao.allTrendingRepositoryList
     }
 }

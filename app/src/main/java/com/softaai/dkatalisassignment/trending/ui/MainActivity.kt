@@ -15,8 +15,6 @@ import org.koin.android.ext.android.get
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    //private val mainActivityViewModel by viewModel<MainActivityViewModel>()
-    //private val mainActivityViewModel: MainActivityViewModel by inject()
     val githubRepositoryListAdapter: GithubRepositoryListAdapter = GithubRepositoryListAdapter()
 
 
@@ -38,7 +36,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         mainActivityViewModel.data.observe(this, Observer {
-            // Populate the UI
             if(!it.isNullOrEmpty()){
                 Toast.makeText(this, "success" + it.size, Toast.LENGTH_LONG).show()
                 githubRepositoryListAdapter.updatePostList(it)
@@ -50,13 +47,11 @@ class MainActivity : AppCompatActivity() {
         })
 
         mainActivityViewModel.loadingState.observe(this, Observer {
-            // Observe the loading state
             if(it != null){
                 Toast.makeText(this, "error" + it.msg, Toast.LENGTH_LONG).show()
                 binding.shimmerViewContainer.stopShimmerAnimation()
                 //binding.shimmerViewContainer.visibility = View.GONE
             }
-
         })
     }
 }
