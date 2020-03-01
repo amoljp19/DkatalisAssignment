@@ -34,7 +34,7 @@ class ContextTest : KoinTest {
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(RuntimeEnvironment.application)
-            modules(diModule)
+           // modules(diModule)
 //            modules(listOf(mainActivityViewModelModule, githubRepositoryViewModel,
 //                trendingRepositoryModule, trendingRepositoryDbModule,
 //                trendingRepositoryDaoModule, spUtilsModule, apiModule))
