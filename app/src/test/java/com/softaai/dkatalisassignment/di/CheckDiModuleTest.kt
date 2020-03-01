@@ -16,6 +16,7 @@ import org.mockito.Mock
 import org.mockito.Mockito.mock
 
 
+
 @Category(CheckModuleTest::class)
 class CheckDiModuleTest : KoinTest {
 

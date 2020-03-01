@@ -13,9 +13,8 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.core.logger.Level
+import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
-import org.koin.test.KoinTest
-import org.koin.test.get
 import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
@@ -28,6 +27,11 @@ class ContextTest : AutoCloseKoinTest() {
         fun getString(stringID: Int): String = context.getString(stringID)
     }
 
+    val myModule = module(override=true){
+        factory { ContextService(get()) }
+    }
+
+
     val contextService: ContextService by inject()
 
     @Before
@@ -36,10 +40,7 @@ class ContextTest : AutoCloseKoinTest() {
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(RuntimeEnvironment.application)
-           // modules(diModule)
-            modules(listOf(mainActivityViewModelModule, githubRepositoryViewModel,
-                trendingRepositoryModule, trendingRepositoryDbModule,
-                trendingRepositoryDaoModule, sharedPreferencesModule, apiModule))
+            modules(myModule)
         }
     }
 
@@ -48,6 +49,11 @@ class ContextTest : AutoCloseKoinTest() {
         stopKoin()
     }
 
+    //ToDo to avoid below warning
+    // [Robolectric] WARN: Android SDK 29 requires Java 9 (have Java 8). Tests won't be run on SDK 29 unless explicitly requested,
+    // also test failed added below @Config annotation, as
+    // latest version of Robolectric, requires java 9 or greater
+    // when it run on android Q build version, my java version is 8
     @Config(sdk = [Build.VERSION_CODES.O_MR1])
     @Test
     fun `testing if we have access to context`() {

@@ -3,6 +3,7 @@ package com.softaai.dkatalisassignment.di
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
+import com.softaai.dkatalisassignment.TrendingRepositoriesApp
 import com.softaai.dkatalisassignment.data.local.TrendingRepositoryDatabase
 import com.softaai.dkatalisassignment.data.remote.TrendingRepositoryApiService
 import com.softaai.dkatalisassignment.repository.TrendingRepository
@@ -110,7 +111,10 @@ import retrofit2.converter.moshi.MoshiConverterFactory
         single { MainActivityViewModel(get(), get()) }
     }
 
-    val sharedPreferencesModule = module {
+    val sharedPreferencesModule = module(override=true) {
+        fun provideContext() : Context{
+            return TrendingRepositoriesApp().applicationContext
+        }
         fun provideSharedPreferences(context: Context): SharedPreferences {
             val PREFS_NAME = "githubtrend"
             val sharedPref: SharedPreferences =
@@ -118,6 +122,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
             return sharedPref
         }
 
+        single { provideContext() }
         single { provideSharedPreferences(get()) }
     }
 
@@ -134,7 +139,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
         }
     }
 
-    val trendingRepositoryDbModule = module {
+    val trendingRepositoryDbModule = module(override = true) {
         single {
             Room.databaseBuilder(
                 get(),
