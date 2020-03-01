@@ -6,8 +6,8 @@ import com.softaai.dkatalisassignment.data.remote.TrendingRepositoryApiService
 
 
 class TrendingRepository(
-    private val api: TrendingRepositoryApiService,
-    private val dao: TrendingRepositoryDao
+    val api: TrendingRepositoryApiService,
+    val dao: TrendingRepositoryDao
 ) {
 
     suspend fun getAllTrendingRepositories() = api.getTrendingRepositories()

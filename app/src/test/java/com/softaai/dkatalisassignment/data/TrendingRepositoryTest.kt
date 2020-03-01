@@ -1,7 +1,6 @@
 package com.softaai.weatherforecast.data
 
 import com.softaai.dkatalisassignment.data.remote.TrendingRepositoryApiService
-import com.softaai.dkatalisassignment.di.trendingRepositoryModule
 import com.softaai.dkatalisassignment.repository.TrendingRepository
 import kotlinx.coroutines.runBlocking
 import me.jorgecastillo.hiroaki.*
@@ -28,9 +27,6 @@ class TrendingRepositoryTest : KoinTest, MockServerSuite() {
     @Before
     override fun setup() {
         super.setup()
-        startKoin {
-            modules(trendingRepositoryModule)
-        }
         server.retrofitService(
             TrendingRepositoryApiService::class.java,
             MoshiConverterFactory.create()

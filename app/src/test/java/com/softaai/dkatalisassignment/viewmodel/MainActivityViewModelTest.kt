@@ -1,9 +1,9 @@
 package com.softaai.dkatalisassignment.viewmodel
 
+import android.content.SharedPreferences
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.softaai.dkatalisassignment.repository.TrendingRepository
 import com.softaai.dkatalisassignment.trending.viewmodel.MainActivityViewModel
-import com.softaai.dkatalisassignment.utils.SPUtils
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert
@@ -20,8 +20,8 @@ class MainActivityViewModelTest {
     val instantExecutorRule = InstantTaskExecutorRule()
 
     private val trendingRepository = Mockito.mock(TrendingRepository::class.java)
-    private val spUtils = Mockito.mock(SPUtils::class.java)
-    private val mainActivityViewModel = MainActivityViewModel(trendingRepository, spUtils)
+    private val sharedPref = Mockito.mock(SharedPreferences::class.java)
+    private val mainActivityViewModel = MainActivityViewModel(trendingRepository, sharedPref)
 
     @Test
     fun testLiveDataNotNull() {
