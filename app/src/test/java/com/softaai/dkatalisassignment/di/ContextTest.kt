@@ -13,6 +13,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.core.logger.Level
+import org.koin.test.AutoCloseKoinTest
 import org.koin.test.KoinTest
 import org.koin.test.get
 import org.koin.test.inject
@@ -21,7 +22,7 @@ import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-class ContextTest : KoinTest {
+class ContextTest : AutoCloseKoinTest() {
 
     class ContextService(private val context: Context) {
         fun getString(stringID: Int): String = context.getString(stringID)
@@ -31,13 +32,14 @@ class ContextTest : KoinTest {
 
     @Before
     fun setUp() {
+        stopKoin()
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(RuntimeEnvironment.application)
            // modules(diModule)
-//            modules(listOf(mainActivityViewModelModule, githubRepositoryViewModel,
-//                trendingRepositoryModule, trendingRepositoryDbModule,
-//                trendingRepositoryDaoModule, spUtilsModule, apiModule))
+            modules(listOf(mainActivityViewModelModule, githubRepositoryViewModel,
+                trendingRepositoryModule, trendingRepositoryDbModule,
+                trendingRepositoryDaoModule, sharedPreferencesModule, apiModule))
         }
     }
 
