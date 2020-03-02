@@ -1,5 +1,7 @@
 package com.softaai.dkatalisassignment.di
 
+import android.app.AppComponentFactory
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
@@ -103,7 +105,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
     //////////////////////////////////////****************************////////////////////////
 
 
-    val mainActivityViewModelModule = module {
+    val mainActivityViewModelModule = module(override = true){
         //    viewModel {
 //        MainActivityViewModel(get(), get())
 //    }
@@ -115,6 +117,9 @@ import retrofit2.converter.moshi.MoshiConverterFactory
         fun provideContext() : Context{
             return TrendingRepositoriesApp().applicationContext
         }
+
+        single { TrendingRepositoriesApp().applicationContext as Context }
+
         fun provideSharedPreferences(context: Context): SharedPreferences {
             val PREFS_NAME = "githubtrend"
             val sharedPref: SharedPreferences =
@@ -122,24 +127,26 @@ import retrofit2.converter.moshi.MoshiConverterFactory
             return sharedPref
         }
 
-        single { provideContext() }
+        //single { provideContext() }
+        single { TrendingRepositoriesApp().applicationContext as Context }
         single { provideSharedPreferences(get()) }
     }
 
-
-    val githubRepositoryViewModel = module {
+    val githubRepositoryViewModel = module(override = true){
         viewModel {
             GithubRepositoryViewModel()
         }
     }
 
-    val trendingRepositoryModule = module {
+    val trendingRepositoryModule = module(override = true){
         single {
             TrendingRepository(get(), get())
         }
     }
 
     val trendingRepositoryDbModule = module(override = true) {
+
+        single { TrendingRepositoriesApp().applicationContext as Context }
         single {
             Room.databaseBuilder(
                 get(),
@@ -150,7 +157,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
     }
 
-    val trendingRepositoryDaoModule = module {
+    val trendingRepositoryDaoModule = module(override = true){
         single {
             get<TrendingRepositoryDatabase>().trendingRepositoryDao()
         }

@@ -1,124 +1,58 @@
 package com.softaai.dkatalisassignment.di
 
-import android.content.Context
-import com.softaai.dkatalisassignment.TrendingRepositoriesApp
-import io.kotlintest.runner.jvm.spec.SingleInstanceSpecRunner
-import org.junit.Before
 import org.junit.Test
 import org.junit.experimental.categories.Category
-import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.startKoin
-import org.koin.dsl.koinApplication
-import org.koin.test.KoinTest
 import org.koin.test.category.CheckModuleTest
 import org.koin.test.check.checkModules
-import org.mockito.Mock
-import org.mockito.Mockito.mock
-
 
 
 @Category(CheckModuleTest::class)
-class CheckDiModuleTest : KoinTest {
+class CheckDiModuleTest {
 
-//    @Test
-//    fun checkDiModule() =
-//        checkModules {
-//            modules(diModule)
-//        }
-
-
-//    @Test
-//    fun `check all dependencies`() {
-//        koinApplication {
-//            modules(diModule)
-//        }.checkModules()
-//    }
-
-
+    // Due to context dependency injection problem in koin test
+    // some test cases failed
 
     @Test
-    fun checkMainActivityViewModelModule() {
-//        =
-//        checkModules {
-//            modules(mainActivityViewModelModule)
-//        }
-
-        koinApplication {
+    fun checkMainActivityViewModelModule() =
+        checkModules {
             modules(mainActivityViewModelModule)
-        }.checkModules()
-    }
+        }
 
     @Test
-    fun checkGithubRepositoryViewModelModule() {
-//        =
-//        checkModules {
-//            modules(githubRepositoryViewModel)
-//        }
-
-        koinApplication {
+    fun checkGithubRepositoryViewModelModule() =
+        checkModules {
             modules(githubRepositoryViewModel)
-        }.checkModules()
-    }
+        }
 
     @Test
-    fun checkTrendingRepositoryModule() {
-//        =
-//        checkModules {
-//            modules(trendingRepositoryModule)
-//        }
-
-        koinApplication {
+    fun checkTrendingRepositoryModule() =
+        checkModules {
             modules(trendingRepositoryModule)
-        }.checkModules()
-    }
+        }
 
     @Test
-    fun checkTrendingRepositoryDaoModule() {
-//        =
-//        checkModules {
-//            modules(trendingRepositoryDaoModule)
-//        }
-
-        koinApplication {
+    fun checkTrendingRepositoryDaoModule() =
+        checkModules {
             modules(trendingRepositoryDaoModule)
-        }.checkModules()
-    }
+        }
 
     @Test
-    fun checkSharedPreferencesModule() {
-//        =
-//        checkModules {
-//            modules(sharedPreferencesModule)
-//        }
-
-        koinApplication {
+    fun checkSharedPreferencesModule() =
+        checkModules {
             modules(sharedPreferencesModule)
-        }.checkModules()
-    }
+        }
 
     @Test
-    fun checkApiModule() {
-//        =
-//        checkModules {
-//            modules(apiModule)
-//        }
-
-        koinApplication {
+    fun checkApiModule() =
+        checkModules {
             modules(apiModule)
-        }.checkModules()
-    }
+        }
 
 
     @Test
-    fun checkRetrofitModule() {
-//        =
-//        checkModules {
-//            modules(retrofitModule)
-//        }
-
-        koinApplication {
+    fun checkRetrofitModule() =
+        checkModules {
             modules(retrofitModule)
-        }.checkModules()
-    }
+        }
 
 }
