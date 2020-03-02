@@ -13,11 +13,10 @@ class TrendingRepositoriesTestApp: Application() {
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@TrendingRepositoriesTestApp)
-            //modules(diModule)
             modules(listOf(
-                mainActivityViewModelModule, githubRepositoryViewModel,
-                trendingRepositoryModule, trendingRepositoryDbModule,
-                trendingRepositoryDaoModule, apiModule
+                mainActivityViewModelTestModule, githubRepositoryViewModelTestModule,
+                trendingRepositoryTestModule, trendingRepositoryDbTestModule,
+                trendingRepositoryDaoTestModule, apiTestModule
             ))
         }
     }

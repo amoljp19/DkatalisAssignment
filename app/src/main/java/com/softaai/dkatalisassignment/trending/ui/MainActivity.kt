@@ -39,8 +39,10 @@ class MainActivity : AppCompatActivity() {
             binding.shimmerViewContainer.startShimmerAnimation()
             val minutes =
                 TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - getValueLong("TIME")!!)
-            if(minutes > 120) {
+            if (minutes > 120) {
                 mainActivityViewModel.getAllTrendingRepositories()
+            } else {
+                mainActivityViewModel.postDataFromLocalDb()
             }
         }
 

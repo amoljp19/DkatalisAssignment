@@ -9,50 +9,42 @@ import org.koin.test.check.checkModules
 @Category(CheckModuleTest::class)
 class CheckDiModuleTest {
 
-    // Due to context dependency injection problem in koin test
-    // some test cases failed
-
     @Test
     fun checkMainActivityViewModelModule() =
         checkModules {
-            modules(mainActivityViewModelModule)
+            modules(mainActivityViewModelTestModule)
         }
 
     @Test
     fun checkGithubRepositoryViewModelModule() =
         checkModules {
-            modules(githubRepositoryViewModel)
+            modules(githubRepositoryViewModelTestModule)
         }
 
     @Test
     fun checkTrendingRepositoryModule() =
         checkModules {
-            modules(trendingRepositoryModule)
+            modules(trendingRepositoryTestModule)
         }
 
     @Test
     fun checkTrendingRepositoryDaoModule() =
         checkModules {
-            modules(trendingRepositoryDaoModule)
+            modules(trendingRepositoryDaoTestModule)
         }
 
-//    @Test
-//    fun checkSharedPreferencesModule() =
-//        checkModules {
-//            modules(sharedPreferencesModule)
-//        }
 
     @Test
     fun checkApiModule() =
         checkModules {
-            modules(apiModule)
+            modules(apiTestModule)
         }
 
 
     @Test
     fun checkRetrofitModule() =
         checkModules {
-            modules(retrofitModule)
+            modules(retrofitTestModule)
         }
 
 }

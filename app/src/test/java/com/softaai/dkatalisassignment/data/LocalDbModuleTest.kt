@@ -91,8 +91,7 @@ class LocalDbModuleTest : KoinTest {
 
     @Config(sdk = [Build.VERSION_CODES.O_MR1])
     @Test
-    fun `testing if we have access to roomDatabase using dependency module`() {
-        //diModuleService.getSharedPreference(PREFS_NAME).edit().putString("TEST", "test").commit()
+    fun `testing if we have access to roomDatabase using dependency module`() { //diModuleService.getSharedPreference(PREFS_NAME).edit().putString("TEST", "test").commit()
         Assert.assertEquals(false, diModuleService.getRoomDataBase(DB_NAME).isOpen())
     }
 

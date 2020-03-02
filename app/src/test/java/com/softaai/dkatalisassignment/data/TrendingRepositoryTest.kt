@@ -1,9 +1,7 @@
 package com.softaai.weatherforecast.data
 
-import arrow.core.none
-import com.nhaarman.mockito_kotlin.atLeastOnce
-import com.softaai.dkatalisassignment.data.local.GithubRepository
 import com.softaai.dkatalisassignment.data.remote.TrendingRepositoryApiService
+import com.softaai.dkatalisassignment.di.trendingRepositoryModule
 import com.softaai.dkatalisassignment.repository.TrendingRepository
 import kotlinx.coroutines.runBlocking
 import me.jorgecastillo.hiroaki.*
@@ -31,14 +29,14 @@ class TrendingRepositoryTest : KoinTest, MockServerSuite() {
     @Before
     override fun setup() {
         super.setup()
+        startKoin { modules(trendingRepositoryModule) }
         server.retrofitService(
             TrendingRepositoryApiService::class.java,
             MoshiConverterFactory.create()
         )
-        //runBlocking { trendingRepository.getAllTrendingRepositories() }
         Runnable {
             koinApplication {
-                runBlocking{  trendingRepository.getAllTrendingRepositories() }
+                runBlocking { trendingRepository.getAllTrendingRepositories() }
             }
         }
     }
@@ -50,11 +48,9 @@ class TrendingRepositoryTest : KoinTest, MockServerSuite() {
         server.whenever(Method.GET, "/repositories")
             .thenRespond(success(jsonBody = fileBody("api_response.json")))
 
-        //runBlocking { trendingRepository.getAllTrendingRepositories() }
-
         Runnable {
             koinApplication {
-                runBlocking{  trendingRepository.getAllTrendingRepositories() }
+                runBlocking { trendingRepository.getAllTrendingRepositories() }
             }
         }
 

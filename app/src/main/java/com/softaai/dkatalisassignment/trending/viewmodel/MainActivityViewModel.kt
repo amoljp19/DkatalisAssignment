@@ -1,6 +1,5 @@
 package com.softaai.dkatalisassignment.trending.viewmodel
 
-import android.content.SharedPreferences
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
@@ -13,7 +12,6 @@ import com.softaai.dkatalisassignment.data.remote.LoadingState
 import com.softaai.dkatalisassignment.repository.TrendingRepository
 import com.softaai.dkatalisassignment.trending.ui.GithubRepositoryListAdapter
 import kotlinx.coroutines.*
-import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
 
 class MainActivityViewModel(val repo: TrendingRepository) :
@@ -50,14 +48,14 @@ class MainActivityViewModel(val repo: TrendingRepository) :
     fun getAllTrendingRepositories() {
         scope.launch {
             _loadingState.postValue(LoadingState.LOADING)
-//
-//            val minutes =
-//                TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - getValueLong("TIME")!!)
 
-            if (repo.getAllTrendingRepositoriesList().isNullOrEmpty()) {
-                getAllTrendingRepositoriesFromRemote()
-            }
+            getAllTrendingRepositoriesFromRemote()
 
+        }
+    }
+
+    fun postDataFromLocalDb() {
+        scope.launch {
             _data.postValue(repo.getAllTrendingRepositoriesList())
         }
     }
@@ -68,23 +66,12 @@ class MainActivityViewModel(val repo: TrendingRepository) :
         if (response.isSuccessful) {
             _loadingState.postValue(LoadingState.LOADED)
             repo.insertAllTrendingRepositories(*response.body()!!.toTypedArray())
-            //spUtils.save("TIME", System.currentTimeMillis())
-           // save("TIME", System.currentTimeMillis())
+            postDataFromLocalDb()
         } else {
             _loadingState.postValue(LoadingState.error(response.errorBody().toString()))
             errorVisibility.value = View.VISIBLE
         }
     }
-
-//    fun save(KEY_NAME: String, text: Long) {
-//        val editor: SharedPreferences.Editor = sharedPref.edit()
-//        editor.putLong(KEY_NAME, text)
-//        editor!!.commit()
-//    }
-//
-//    fun getValueLong(KEY_NAME: String): Long? {
-//        return sharedPref.getLong(KEY_NAME, 0)
-//    }
 
     fun cancelRequests() = coroutineContext.cancel()
 
