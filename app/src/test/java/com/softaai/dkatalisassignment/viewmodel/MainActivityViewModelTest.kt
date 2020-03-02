@@ -21,7 +21,7 @@ class MainActivityViewModelTest {
 
     private val trendingRepository = Mockito.mock(TrendingRepository::class.java)
     private val sharedPref = Mockito.mock(SharedPreferences::class.java)
-    private val mainActivityViewModel = MainActivityViewModel(trendingRepository, sharedPref)
+    private val mainActivityViewModel = MainActivityViewModel(trendingRepository)
 
     @Test
     fun testLiveDataNotNull() {
