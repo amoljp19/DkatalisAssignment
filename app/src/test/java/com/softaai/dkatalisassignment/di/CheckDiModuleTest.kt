@@ -36,11 +36,11 @@ class CheckDiModuleTest {
             modules(trendingRepositoryDaoModule)
         }
 
-    @Test
-    fun checkSharedPreferencesModule() =
-        checkModules {
-            modules(sharedPreferencesModule)
-        }
+//    @Test
+//    fun checkSharedPreferencesModule() =
+//        checkModules {
+//            modules(sharedPreferencesModule)
+//        }
 
     @Test
     fun checkApiModule() =

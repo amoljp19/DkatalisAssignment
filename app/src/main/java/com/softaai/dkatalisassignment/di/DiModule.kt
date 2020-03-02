@@ -149,19 +149,22 @@ import retrofit2.converter.moshi.MoshiConverterFactory
         single { MainActivityViewModel(get()) }
     }
 
-    val sharedPreferencesModule = module(override=true) {
-        //single { TrendingRepositoriesApp() as Context }
-        fun provideSharedPreferences(context: Context): SharedPreferences {
-            val PREFS_NAME = "githubtrend"
-            val sharedPref: SharedPreferences =
-                context.getSharedPreferences(PREFS_NAME, 0x0000)
-            return sharedPref
-        }
-
-        //single { provideContext() }
-        single { TrendingRepositoriesApp() as Context }
-        single { provideSharedPreferences(get()) }
-    }
+//    val sharedPreferencesModule = module(override=true) {
+//        //single { TrendingRepositoriesApp() as Context }
+//        fun provideContext(): Context{
+//            return TrendingRepositoriesApp()
+//        }
+//        fun provideSharedPreferences(context: Context): SharedPreferences {
+//            val PREFS_NAME = "githubtrend"
+//            val sharedPref: SharedPreferences =
+//                context.getSharedPreferences(PREFS_NAME, 0x0000)
+//            return sharedPref
+//        }
+//
+//        single { provideContext() }
+//        //single { TrendingRepositoriesApp() as Context }
+//        single { provideSharedPreferences(get()) }
+//    }
 
     val githubRepositoryViewModel = module(override = true){
         viewModel {

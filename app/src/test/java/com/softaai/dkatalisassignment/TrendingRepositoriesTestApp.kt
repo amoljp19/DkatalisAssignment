@@ -17,7 +17,7 @@ class TrendingRepositoriesTestApp: Application() {
             modules(listOf(
                 mainActivityViewModelModule, githubRepositoryViewModel,
                 trendingRepositoryModule, trendingRepositoryDbModule,
-                trendingRepositoryDaoModule, sharedPreferencesModule, apiModule
+                trendingRepositoryDaoModule, apiModule
             ))
         }
     }
