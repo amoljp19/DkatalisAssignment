@@ -7,10 +7,7 @@ import com.softaai.dkatalisassignment.TrendingRepositoriesApp
 import com.softaai.dkatalisassignment.data.local.GithubRepository
 import com.softaai.dkatalisassignment.data.local.TrendingRepositoryDao
 import com.softaai.dkatalisassignment.data.local.TrendingRepositoryDatabase
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.dsl.koinApplication
@@ -59,6 +56,7 @@ class TrendingRepositoriesDaoTest : KoinTest {
             koinApplication {
                 trendingRepositoryDao.insertAllTrendingRepositories(trendingRepository)
                 trendingRepositoryDao.allTrendingRepositoryList
+                Assert.assertEquals("twostraws", trendingRepositoryDao.allTrendingRepositoryList.get(0).author)
             }
         }
     }
