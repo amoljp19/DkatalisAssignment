@@ -150,12 +150,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
     }
 
     val sharedPreferencesModule = module(override=true) {
-        fun provideContext() : Context{
-            return TrendingRepositoriesApp().applicationContext
-        }
-
-        single { TrendingRepositoriesApp().applicationContext as Context }
-
+        //single { TrendingRepositoriesApp() as Context }
         fun provideSharedPreferences(context: Context): SharedPreferences {
             val PREFS_NAME = "githubtrend"
             val sharedPref: SharedPreferences =
@@ -164,7 +159,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
         }
 
         //single { provideContext() }
-        single { TrendingRepositoriesApp().applicationContext as Context }
+        single { TrendingRepositoriesApp() as Context }
         single { provideSharedPreferences(get()) }
     }
 
@@ -175,6 +170,43 @@ import retrofit2.converter.moshi.MoshiConverterFactory
     }
 
     val trendingRepositoryModule = module(override = true){
+
+        fun provideMoshi(): Moshi {
+            return Moshi.Builder().build()
+        }
+
+        fun provideHttpClient(): OkHttpClient {
+            val okHttpClientBuilder = OkHttpClient.Builder()
+
+            return okHttpClientBuilder.build()
+        }
+
+        fun provideRetrofit(moshi: Moshi, client: OkHttpClient): Retrofit {
+            return Retrofit.Builder()
+                .baseUrl(Constants.URL)
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
+                .client(client)
+                .build()
+        }
+
+        fun provideTrendingRepositoryApiService(retrofit: Retrofit): TrendingRepositoryApiService {
+            return retrofit.create(TrendingRepositoryApiService::class.java)
+        }
+
+        single { TrendingRepositoriesApp() as Context }
+        single {
+            Room.databaseBuilder(
+                get(),
+                TrendingRepositoryDatabase::class.java,
+                "trending_repository_db"
+            ).build()
+        }
+
+        single { get<TrendingRepositoryDatabase>().trendingRepositoryDao() }
+        single { provideMoshi() }
+        single { provideHttpClient() }
+        single { provideRetrofit(get(), get()) }
+        single { provideTrendingRepositoryApiService(get()) }
         single {
             TrendingRepository(get(), get())
         }
@@ -182,7 +214,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
     val trendingRepositoryDbModule = module(override = true) {
 
-        single { TrendingRepositoriesApp().applicationContext as Context }
+        single { TrendingRepositoriesApp() as Context }
         single {
             Room.databaseBuilder(
                 get(),
@@ -194,6 +226,14 @@ import retrofit2.converter.moshi.MoshiConverterFactory
     }
 
     val trendingRepositoryDaoModule = module(override = true){
+        single { TrendingRepositoriesApp() as Context }
+        single {
+            Room.databaseBuilder(
+                get(),
+                TrendingRepositoryDatabase::class.java,
+                "trending_repository_db"
+            ).build()
+        }
         single {
             get<TrendingRepositoryDatabase>().trendingRepositoryDao()
         }
