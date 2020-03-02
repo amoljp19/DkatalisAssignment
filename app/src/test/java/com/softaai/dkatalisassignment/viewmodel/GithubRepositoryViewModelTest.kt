@@ -1,13 +1,9 @@
 package com.softaai.dkatalisassignment.viewmodel
 
-import android.widget.TextView
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.softaai.dkatalisassignment.data.local.GithubRepository
-import com.softaai.dkatalisassignment.databinding.ItemRepositoryBinding
 import com.softaai.dkatalisassignment.di.githubRepositoryViewModelTestModule
 import com.softaai.dkatalisassignment.trending.viewmodel.GithubRepositoryViewModel
-import com.softaai.dkatalisassignment.utils.CircleView
-import io.mockk.impl.annotations.MockK
 import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert
 import org.junit.*
@@ -15,22 +11,12 @@ import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.test.KoinTest
 import org.koin.test.inject
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 
 
 class GithubRepositoryViewModelTest: KoinTest{
 
     private val githubRepositoryViewModel: GithubRepositoryViewModel by inject()
-
-    @MockK
-    lateinit var binding: ItemRepositoryBinding
-
-    @MockK
-    lateinit var circularView: CircleView
-
 
     @get:Rule
     val rule = InstantTaskExecutorRule()
