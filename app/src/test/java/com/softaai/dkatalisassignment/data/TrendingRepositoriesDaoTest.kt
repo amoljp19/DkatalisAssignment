@@ -1,7 +1,9 @@
 package com.softaai.dkatalisassignment.data
 
+import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.softaai.dkatalisassignment.TrendingRepositoriesTestApp
+import androidx.room.Room
+import com.softaai.dkatalisassignment.TrendingRepositoriesApp
 import com.softaai.dkatalisassignment.data.local.GithubRepository
 import com.softaai.dkatalisassignment.data.local.TrendingRepositoryDao
 import com.softaai.dkatalisassignment.data.local.TrendingRepositoryDatabase
@@ -11,6 +13,8 @@ import org.junit.Rule
 import org.junit.Test
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
+import org.koin.dsl.koinApplication
+import org.koin.dsl.module
 import org.koin.test.KoinTest
 import org.koin.test.inject
 
@@ -23,10 +27,23 @@ class TrendingRepositoriesDaoTest : KoinTest {
     val trendingRepositoryDao by inject<TrendingRepositoryDao>()
     val trendingRepositoryDatabase by inject<TrendingRepositoryDatabase>()
 
+    val trendingRepositoryDaoTestModule = module(override = true){
+        single { TrendingRepositoriesApp() as Context }
+        single {
+            Room.inMemoryDatabaseBuilder(
+                get(),
+                TrendingRepositoryDatabase::class.java
+            ).build()
+        }
+        single {
+            get<TrendingRepositoryDatabase>().trendingRepositoryDao()
+        }
+    }
+
     @Before
     fun initDependencies() {
         startKoin{
-            TrendingRepositoriesTestApp()
+            modules(trendingRepositoryDaoTestModule)
         }
     }
 
@@ -38,8 +55,12 @@ class TrendingRepositoriesDaoTest : KoinTest {
 
     @Test
     fun insertAndRetrieveTest() {
-        trendingRepositoryDao.insertAllTrendingRepositories(trendingRepository)
-        trendingRepositoryDao.allTrendingRepositoryList
+        Runnable {
+            koinApplication {
+                trendingRepositoryDao.insertAllTrendingRepositories(trendingRepository)
+                trendingRepositoryDao.allTrendingRepositoryList
+            }
+        }
     }
 
     fun createTrendingRepository(): GithubRepository{
