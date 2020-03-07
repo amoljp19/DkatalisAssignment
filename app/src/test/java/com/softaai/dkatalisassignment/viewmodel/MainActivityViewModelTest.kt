@@ -1,71 +1,96 @@
 package com.softaai.dkatalisassignment.viewmodel
 
-import android.content.SharedPreferences
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.softaai.dkatalisassignment.di.githubRepositoryViewModelTestModule
-import com.softaai.dkatalisassignment.di.mainActivityViewModelTestModule
-import com.softaai.dkatalisassignment.di.trendingRepositoryTestModule
+import android.os.Build
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.softaai.dkatalisassignment.data.local.GithubRepository
+import com.softaai.dkatalisassignment.data.local.TrendingRepositoryDao
+import com.softaai.dkatalisassignment.data.remote.LoadingState
+import com.softaai.dkatalisassignment.data.remote.TrendingRepositoryApiService
 import com.softaai.dkatalisassignment.repository.TrendingRepository
-import com.softaai.dkatalisassignment.trending.viewmodel.GithubRepositoryViewModel
 import com.softaai.dkatalisassignment.trending.viewmodel.MainActivityViewModel
-import io.mockk.impl.annotations.MockK
+import junit.framework.Assert.assertTrue
 import kotlinx.coroutines.runBlocking
-import org.hamcrest.CoreMatchers
-import org.hamcrest.MatcherAssert
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
-import org.koin.core.context.startKoin
-import org.koin.core.context.stopKoin
-import org.koin.test.KoinTest
-import org.koin.test.inject
 import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
+import org.mockito.Mockito.`when`
+import org.mockito.junit.MockitoJUnit
+import org.mockito.junit.MockitoRule
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
+import retrofit2.Response
+
+@RunWith(RobolectricTestRunner::class)
+@Config(manifest= Config.NONE)
+class MainActivityViewModelTest{
+
+    private lateinit var viewModel: MainActivityViewModel
+
+    private lateinit var _loadingState: LiveData<LoadingState>
+
+    private lateinit var _data: LiveData<List<GithubRepository>>
+
+    private val trendingRepositoryList = listOf(
+        GithubRepository(
+                id = 0,
+        author = "twostraws",
+        name = "ControlRoom",
+        avatar = "https://github.com/twostraws.png",
+        description = "A macOS app to control the Xcode Simulator.",
+        language = "Swift",
+        languageColor = "#ffac45",
+        stars = "1245",
+        forks = "70",
+        currentPeriodStars = "440"
+    )
+    ,
+        GithubRepository(
+            id = 1,
+            author = "twostraws1",
+            name = "ControlRoom1",
+            avatar = "https://github.com/twostraws.png",
+            description = "A macOS app to control the Xcode Simulator.1",
+            language = "Swift1",
+            languageColor = "#ffac45",
+            stars = "1245",
+            forks = "80",
+            currentPeriodStars = "441"
+        )
+    )
+
+    @Mock
+    private val trendingRepositoryListLiveData: MutableLiveData<List<GithubRepository>> = MutableLiveData()
 
 
-class MainActivityViewModelTest: KoinTest{
 
-    private val mainActivityViewModel:MainActivityViewModel by inject()
+    @Mock
+    private lateinit var api: TrendingRepositoryApiService
 
-    private val trendingRepository: TrendingRepository by inject()
+    @Mock
+    private lateinit var dao: TrendingRepositoryDao
 
+    @Mock
+    private lateinit var repo: TrendingRepository
 
-    @get:Rule
-    val rule = InstantTaskExecutorRule()
+    @Rule
+    @JvmField
+    val mockitoRule: MockitoRule = MockitoJUnit.rule()
 
     @Before
-    fun before() {
-        MockitoAnnotations.initMocks(this@MainActivityViewModelTest)
-        startKoin{
-            modules(mainActivityViewModelTestModule, trendingRepositoryTestModule)
-        }
+    fun setUp() {
+        repo = TrendingRepository(api, dao)
+        viewModel = MainActivityViewModel(repo)
+        _loadingState = viewModel.loadingState
     }
 
-    @After
-    fun after() {
-        stopKoin()
+    @Config(sdk = [Build.VERSION_CODES.O_MR1])
+    @Test
+    fun testGetAllTrendingRepositoriesFromRemoteSuccessResponse() = runBlocking{
+        `when`(repo.getAllTrendingRepositories()).thenReturn(Response.success(trendingRepositoryList))
+        viewModel.getAllTrendingRepositoriesFromRemote()
+        assertTrue(viewModel.response.isSuccessful)
     }
-
-
-//    @Test
-//    fun testLiveDataNotNull() {
-//        MatcherAssert.assertThat(mainActivityViewModel.data, CoreMatchers.notNullValue())
-//        MatcherAssert.assertThat(mainActivityViewModel.loadingState, CoreMatchers.notNullValue())
-//
-//        runBlocking {
-//            Mockito.verify(trendingRepository, Mockito.never()).getAllTrendingRepositories()
-//        }
-//    }
-//
-//    @Test
-//    fun testGetApiResponseCalled() {
-//        runBlocking {
-//            Mockito.verify(trendingRepository, Mockito.never()).getAllTrendingRepositories()
-//        }
-//    }
-
 }

@@ -12,6 +12,7 @@ import com.softaai.dkatalisassignment.data.remote.LoadingState
 import com.softaai.dkatalisassignment.repository.TrendingRepository
 import com.softaai.dkatalisassignment.trending.ui.GithubRepositoryListAdapter
 import kotlinx.coroutines.*
+import retrofit2.Response
 import kotlin.coroutines.CoroutineContext
 
 class MainActivityViewModel(val repo: TrendingRepository) :
@@ -40,6 +41,21 @@ class MainActivityViewModel(val repo: TrendingRepository) :
     val data: LiveData<List<GithubRepository>>
         get() = _data
 
+    var response: Response<List<GithubRepository>> = Response.success(listOf(
+        GithubRepository(
+            id = 0,
+            author = "twostraws",
+            name = "ControlRoom",
+            avatar = "https://github.com/twostraws.png",
+            description = "A macOS app to control the Xcode Simulator.",
+            language = "Swift",
+            languageColor = "#ffac45",
+            stars = "1245",
+            forks = "70",
+            currentPeriodStars = "440"
+        )
+    ))
+
     init {
         getAllTrendingRepositories()
     }
@@ -61,7 +77,7 @@ class MainActivityViewModel(val repo: TrendingRepository) :
     }
 
     suspend fun getAllTrendingRepositoriesFromRemote() {
-        val response = repo.getAllTrendingRepositories()
+        response = repo.getAllTrendingRepositories()
 
         if (response.isSuccessful) {
             _loadingState.postValue(LoadingState.LOADED)
