@@ -4,8 +4,7 @@ import com.softaai.dkatalisassignment.data.local.GithubRepository
 import com.softaai.dkatalisassignment.data.local.TrendingRepositoryDao
 import com.softaai.dkatalisassignment.data.remote.TrendingRepositoryApiService
 
-
-class TrendingRepository(
+open class TrendingRepository(
     val api: TrendingRepositoryApiService,
     val dao: TrendingRepositoryDao
 ) {
